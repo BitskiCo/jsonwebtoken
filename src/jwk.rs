@@ -259,7 +259,27 @@ impl Default for RSAKeyType {
     }
 }
 
-/// Parameters for a RSA Key
+/// The "oth" (other primes info) parameter.
+#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, Default)]
+pub struct RSAKeyOtherParameters {
+    /// The "r" (prime factor) parameter within an "oth" array member
+    /// represents the value of a subsequent prime factor. It is represented
+    /// as a Base64urlUInt-encoded value.
+    pub r: String,
+
+    /// The "d" (factor CRT exponent) parameter within an "oth" array member
+    /// represents the CRT exponent of the corresponding prime factor. It is
+    /// represented as a Base64urlUInt-encoded value.
+    pub d: String,
+
+    /// The "t" (factor CRT coefficient) parameter within an "oth" array
+    /// member represents the CRT coefficient of the corresponding prime
+    /// factor. is represented as a Base64urlUInt-encoded value.
+    pub t: String,
+}
+
+/// Parameters for a RSA Key. Defined in
+/// [RFC 7518 #7.6](https://tools.ietf.org/html/rfc7518#section-6.3)
 #[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize, Default)]
 pub struct RSAKeyParameters {
     /// Key type value for a RSA Key
@@ -267,12 +287,44 @@ pub struct RSAKeyParameters {
     pub key_type: RSAKeyType,
 
     /// The "n" (modulus) parameter contains the modulus value for the RSA
-    /// public key.
+    /// public key. It is represented as a Base64urlUInt-encoded value.
     pub n: String,
 
     /// The "e" (exponent) parameter contains the exponent value for the RSA
-    /// public key.
+    /// public key. It is represented as a Base64urlUInt-encoded value.
     pub e: String,
+
+    /// The "d" (private exponent) parameter contains the private exponent
+    /// value for the RSA private key. It is represented as a Base64urlUInt-
+    /// encoded value.
+    pub d: Option<String>,
+
+    // The "p" (first prime factor) parameter contains the first prime
+    // factor. It is represented as a Base64urlUInt-encoded value.
+    pub p: Option<String>,
+
+    // The "q" (second prime factor) parameter contains the second prime
+    // factor. It is represented as a Base64urlUInt-encoded value.
+    pub q: Option<String>,
+
+    // The "dp" (first factor CRT exponent) parameter contains the Chinese
+    // Remainder Theorem (CRT) exponent of the first factor. It is
+    // represented as a Base64urlUInt-encoded value.
+    pub dp: Option<String>,
+
+    // The "dq" (second factor CRT exponent) parameter contains the CRT
+    // exponent of the second factor. It is represented as a Base64urlUInt-
+    // encoded value.
+    pub dq: Option<String>,
+
+    // The "qi" (first CRT coefficient) parameter contains the CRT
+    // coefficient of the second factor. It is represented as a
+    // Base64urlUInt-encoded value.
+    pub qi: Option<String>,
+
+    // The "oth" (other primes info) parameter contains an array of
+    // information about any third and subsequent primes, should they exist.
+    pub oth: Option<Vec<RSAKeyOtherParameters>>,
 }
 
 /// Key type value for an Octet symmetric key.
